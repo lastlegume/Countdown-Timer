@@ -1,3 +1,7 @@
+html {
+    min-height: 5em;
+    min-width: 20em;
+}
 body{
     color: black;
     text-align: center;
@@ -11,16 +15,25 @@ button{
     color: black;
     text-align: center;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    background-color: lawngreen;
     border:0;
     border-radius: 12px;
     font-size: 12px;
     width: fit-content;
     transition: 100ms;
+    margin-bottom: 2px;
 }
-button:hover{
+#add{
+    background-color: lawngreen;
+}
+#remove{
+    background-color: red;
+}
+button:hover#add{
     background-color: rgb(107, 196, 19);
 }
+button:hover#remove{
+    background-color: rgb(220, 22, 22);
+}
 button:active{
-    box-shadow: 0 2px #666;
+    box-shadow: 0 1px #666;
 }

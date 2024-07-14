@@ -2,6 +2,13 @@ draw();
 chrome.tabs.onActivated.addListener(() => {
         draw();
 });
+chrome.windows.onFocusChanged.addListener((windowId) => {
+    draw();
+});
+chrome.runtime.onMessage.addListener(handleMessage);
+function handleMessage(request, sender, sendResponse) {
+    setTimeout(draw, 1000);
+}
 async function draw() {
     const canvas = new OffscreenCanvas(31, 31);
     var context = canvas.getContext('2d');
@@ -15,27 +22,25 @@ async function draw() {
     context.fill();
     var stuff = await chrome.storage.local.get();
     if(Object.values(stuff).length<=1){
-        console.log("new");
-            await chrome.storage.local.set({ 'target': target.getTime() });
-            await chrome.storage.local.set({ 'start': start.getTime() });
+            await chrome.storage.local.set({ 'target0': target.getTime() });
+            await chrome.storage.local.set({ 'start0': start.getTime() });
+            await chrome.storage.local.set({ 'number': 0 });
     }
     try {
-        target = await chrome.storage.local.get('target');
-        start = await chrome.storage.local.get('start');
+        var num = await chrome.storage.local.get('number');
+        num = num.number;
+        target = await chrome.storage.local.get('target'+num);
+        start = await chrome.storage.local.get('start'+num);
     } catch (error) {
         console.log(error);
     }    
 
-
-    let d = new Date();
-
-    // console.log(d);
-    start = start.start;
-    target = target.target;
+    start = start['start'+num];
+    target = target['target'+num];
 
     target = new Date(target);
     start = new Date(start);
-    var timePercent = Math.max((target.getTime()-d.getTime())/(target.getTime()-start.getTime()),.000001);
+    var timePercent = Math.max((target.getTime()-Date.now())/(target.getTime()-start.getTime()),.000001);
     let angle = 2*Math.PI*(1-timePercent)+(Math.PI/2);
     // console.log(timePercent*2);
     context.beginPath();

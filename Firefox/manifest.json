@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Countdown Timer",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Counts down until a specified date and time",
   "icons": {
     "30": "icons/countdown30.png",

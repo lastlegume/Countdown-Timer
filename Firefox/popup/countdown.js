@@ -14,7 +14,7 @@ function changeDate() {
 }
 async function awaitRemove() {
     var num = await browser.storage.local.get('number');
-    removeDate(num);
+    removeDate(num.number);
 }
 async function calcOffset() {
     var d = new Date();
@@ -27,13 +27,14 @@ async function calcOffset() {
     } catch (error) {
         console.log(error);
     }
+    target = target['target' + num];
     //console.log(target);
     var header = document.getElementById("header");
-    header.textContent = "Time Until " + target['target' + num].toLocaleDateString();
+    header.textContent = "Time Until " + target.toLocaleDateString();
     var subhead = document.getElementById("subhead");
-    subhead.textContent = target['target' + num].toLocaleTimeString();
+    subhead.textContent = target.toLocaleTimeString();
     var day = document.getElementById("day");
-    var combined = target['target' + num] - d;
+    var combined = target - d;
     var days = Math.max(0, Math.floor((combined) / 86400000));
     day.textContent = days + (days == 1 ? " day" : " days");
     var hour = document.getElementById("hour");
@@ -60,6 +61,8 @@ async function calcOffset() {
             }
         }
     }
+    browser.runtime.sendMessage("draw");
+
     return secs;
 }
 async function setDate() {
@@ -174,12 +177,13 @@ async function removeDate(num) {
 async function checkForFinished(){
     var data = await browser.storage.local.get();
     data = Object.entries(data);
-    const date = new Date();
   //  var num = await browser.storage.local.get('number');
     for (var i = 0; i < data.length; i++) {
         if(data[i][0].substring(0,6)==='target'){
-            if(data[i][1].getTime()+3600000<date.getTime()){
-                console.log(data[i][1].getTime());
+            console.log(data[i][1].getTime());
+            console.log(Date.now());
+
+            if(data[i][1].getTime()+3600000<Date.now()){
           //      browser.storage.local.set({'number':data[i][0].substring(6)});
                 removeDate(data[i][0].substring(6));   
             }

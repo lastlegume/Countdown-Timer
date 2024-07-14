@@ -29,14 +29,12 @@ async function draw() {
     }    
 
 
-    let d = new Date();
-
     //console.log(d);
     start = start['start'+num];
     target = target['target'+num];
     // console.log(start);
     // console.log(target);
-    var timePercent = Math.max((target.getTime()-d.getTime())/(target.getTime()-start.getTime()),.000001);
+    var timePercent = Math.max((target.getTime()-Date.now())/(target.getTime()-start.getTime()),.000001);
     let angle = 2*Math.PI*(1-timePercent)+(Math.PI/2);
     // console.log(timePercent*2);
     context.beginPath();
