@@ -22,7 +22,7 @@ async function draw() {
     try {
         var num = await browser.storage.local.get({ 'number': 0 });
         num = num.number;
-        var target = await browser.storage.local.get({ ['target'+num]: new Date(2038, 0, 19, 3, 14) });
+        var target = await browser.storage.local.get({ ['target'+num]: new Date(d.getFullYear()+1, 0, 1) });
         var start = await browser.storage.local.get({ ['start'+num]: new Date(2025, 0, 1) });
     } catch (error) {
         console.log(error);
