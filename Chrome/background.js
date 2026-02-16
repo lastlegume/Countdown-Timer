@@ -18,7 +18,7 @@ async function draw() {
     context.arc(16, 16, 15, 0, 2 * Math.PI, false);
     context.fillStyle = 'black';
     var start = new Date();
-    var target = new Date(2038, 0, 19, 3, 14);
+    var target = new Date(start.getFullYear()+1, 0, 1)
     context.fill();
     var stuff = await chrome.storage.local.get();
     if(Object.values(stuff).length<=1){

@@ -117,8 +117,9 @@ async function populate() {
     //removes old timers
     checkForFinished();
     var stuff = await chrome.storage.local.get();
+    let d = new Date();
     if(Object.values(stuff).length<=1){
-            await chrome.storage.local.set({ 'target0': (new Date(2038, 0, 19, 3, 14)).getTime() });
+            await chrome.storage.local.set({ 'target0': (new Date(d.getFullYear()+1, 0, 1)).getTime() });
             await chrome.storage.local.set({ 'start0': Date.now() });
             await chrome.storage.local.set({ 'number': 0 });
     }
