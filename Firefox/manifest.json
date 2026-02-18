@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Countdown Timer",
-  "version": "2.0.2",
+  "version": "2.0.4",
   "description": "Counts down until a specified date and time",
   "icons": {
     "30": "icons/countdown30.png",
@@ -20,5 +20,15 @@
   },
   "permissions": [
     "storage"
-  ]
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{e84d1aea-fbb4-4efb-8ebd-3f733f50128b}",
+      "data_collection_permissions": {
+        "required": [
+          "none"
+        ]
+      }
+    }
+  }
 }

@@ -22,7 +22,7 @@ async function calcOffset() {
     try {
         var num = await browser.storage.local.get({ 'number': 0 });
         num = num.number;
-        var target = await browser.storage.local.get({ ['target' + num]: new Date(d.getFullYear()+1, 0, 1) });
+        var target = await browser.storage.local.get({ ['target' + num]: new Date(d.getFullYear() + 1, 0, 1) });
     } catch (error) {
         console.log(error);
     }
@@ -105,10 +105,10 @@ async function populate() {
     } catch (error) {
     }
     tar = Object.entries(tar);
-    if(tar.length!=0){
+    if (tar.length != 0) {
         var sta = await browser.storage.local.get('start');
-        browser.storage.local.set({'target0':tar[0][1]});
-        browser.storage.local.set({'start0':sta.start});
+        browser.storage.local.set({ 'target0': tar[0][1] });
+        browser.storage.local.set({ 'start0': sta.start });
         browser.storage.local.remove('target');
         browser.storage.local.remove('start');
     }
@@ -162,8 +162,8 @@ async function removeDate(num) {
                 browser.storage.local.set({ ['target' + (parseInt(data[i][0].substring(6)) - 1)]: data[i][1] });
             }
         }
-        if(counter == 0){
-            browser.storage.local.set({'number':num-1});
+        if (counter == 0) {
+            browser.storage.local.set({ 'number': num - 1 });
         }
         num = (data.length - 1) / 2;
         browser.storage.local.remove('target' + num);
@@ -173,21 +173,21 @@ async function removeDate(num) {
 
     }
 }
-async function checkForFinished(){
+async function checkForFinished() {
     var data = await browser.storage.local.get();
     data = Object.entries(data);
-  //  var num = await browser.storage.local.get('number');
+    //  var num = await browser.storage.local.get('number');
     for (var i = 0; i < data.length; i++) {
-        if(data[i][0].substring(0,6)==='target'){
+        if (data[i][0].substring(0, 6) === 'target') {
             console.log(data[i][1].getTime());
             console.log(Date.now());
 
-            if(data[i][1].getTime()+3600000<Date.now()){
-          //      browser.storage.local.set({'number':data[i][0].substring(6)});
-                removeDate(data[i][0].substring(6));   
+            if (data[i][1].getTime() + 3600000 < Date.now()) {
+                //      browser.storage.local.set({'number':data[i][0].substring(6)});
+                removeDate(data[i][0].substring(6));
             }
         }
     }
- //   browser.storage.local.set({'number':num});
+    //   browser.storage.local.set({'number':num});
 
 }
