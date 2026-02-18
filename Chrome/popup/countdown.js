@@ -76,10 +76,7 @@ async function setDate() {
     }
     var n = (data.length - 1) / 2;
     var date = new Date(document.getElementById("date").value);
-    //    var num = date.getTime()+(date.getTimezoneOffset()*60000);
-    //  date = new Date(num);
-    //console.log(date);
-    let d = new Date();
+
     if (!isNaN(date.getTime())) {
         chrome.storage.local.set({ ['target' + n]: date.getTime() });
         chrome.storage.local.set({ ['start' + n]: Date.now() });
@@ -107,10 +104,10 @@ async function populate() {
     } catch (error) {
     }
     tar = Object.entries(tar);
-    if(tar.length!=0){
+    if (tar.length != 0) {
         var sta = await chrome.storage.local.get('start');
-        chrome.storage.local.set({'target0':tar[0][1]});
-        chrome.storage.local.set({'start0':sta.start});
+        chrome.storage.local.set({ 'target0': tar[0][1] });
+        chrome.storage.local.set({ 'start0': sta.start });
         chrome.storage.local.remove('target');
         chrome.storage.local.remove('start');
     }
@@ -118,10 +115,10 @@ async function populate() {
     checkForFinished();
     var stuff = await chrome.storage.local.get();
     let d = new Date();
-    if(Object.values(stuff).length<=1){
-            await chrome.storage.local.set({ 'target0': (new Date(d.getFullYear()+1, 0, 1)).getTime() });
-            await chrome.storage.local.set({ 'start0': Date.now() });
-            await chrome.storage.local.set({ 'number': 0 });
+    if (Object.values(stuff).length <= 1) {
+        await chrome.storage.local.set({ 'target0': (new Date(d.getFullYear() + 1, 0, 1)).getTime() });
+        await chrome.storage.local.set({ 'start0': Date.now() });
+        await chrome.storage.local.set({ 'number': 0 });
     }
     //adds options to the selection so that the user can choose which timer to use
     var list = document.getElementById("list");
@@ -171,8 +168,8 @@ async function removeDate(num) {
                 chrome.storage.local.set({ ['target' + (parseInt(data[i][0].substring(6)) - 1)]: data[i][1] });
             }
         }
-        if(counter == 0){
-            chrome.storage.local.set({'number':num-1});
+        if (counter == 0) {
+            chrome.storage.local.set({ 'number': num - 1 });
         }
         num = (data.length - 1) / 2;
         chrome.storage.local.remove('target' + num);
@@ -182,18 +179,15 @@ async function removeDate(num) {
 
     }
 }
-async function checkForFinished(){
+async function checkForFinished() {
     var data = await chrome.storage.local.get();
     data = Object.entries(data);
-  //  var num = await browser.storage.local.get('number');
     for (var i = 0; i < data.length; i++) {
-        if(data[i][0].substring(0,6)==='target'){
-            if(data[i][1]+3600000<Date.now()){
-          //      browser.storage.local.set({'number':data[i][0].substring(6)});
-                removeDate(data[i][0].substring(6));   
+        if (data[i][0].substring(0, 6) === 'target') {
+            if (data[i][1] + 3600000 < Date.now()) {
+                removeDate(data[i][0].substring(6));
             }
         }
     }
- //   browser.storage.local.set({'number':num});
 
 }
