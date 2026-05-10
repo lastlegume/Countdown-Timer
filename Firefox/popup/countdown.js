@@ -1,3 +1,6 @@
+// NOTE: num is the index of the active timer
+
+
 populate();
 const add = document.getElementById("add");
 add.addEventListener('click', () => setDate());
@@ -194,18 +197,17 @@ async function removeDate(num) {
 async function checkForFinished() {
     var data = await browser.storage.local.get();
     data = Object.entries(data);
-    //  var num = await browser.storage.local.get('number');
+
     for (var i = 0; i < data.length; i++) {
         if (data[i][0].substring(0, 6) === 'target') {
-            console.log(data[i][1].getTime());
-            console.log(Date.now());
+            // if from a previous version without names, add a blank name
+            let n = parseInt(data[i][0].substring(6));
+            let name = await browser.storage.local.get({ ['name'+n]: "" });
 
             if (data[i][1].getTime() + 3600000 < Date.now()) {
-                //      browser.storage.local.set({'number':data[i][0].substring(6)});
                 removeDate(data[i][0].substring(6));
             }
         }
     }
-    //   browser.storage.local.set({'number':num});
 
 }
