@@ -9,7 +9,6 @@ calcOffset();
 setInterval(() => calcOffset(), 1000);
 
 function changeDate() {
-    console.log('change ' + list.value);
     browser.storage.local.set({ 'number': list.value });
 }
 async function awaitRemove() {
@@ -71,7 +70,7 @@ async function setDate() {
     } catch (error) {
         console.log(error);
     }
-    var n = (data.length - 1) / 2;
+    var n = (data.length - 1) / 3;
     var date = new Date(document.getElementById("date").value);
     //    var num = date.getTime()+(date.getTimezoneOffset()*60000);
     //  date = new Date(num);
@@ -80,6 +79,7 @@ async function setDate() {
     if (!isNaN(date.getTime())) {
         browser.storage.local.set({ ['target' + n]: date });
         browser.storage.local.set({ ['start' + n]: d });
+        browser.storage.local.set({ ['name' + n]: document.getElementById("name").value });
         browser.storage.local.set({ 'number': n });
 
         var day = document.getElementById("day");
@@ -134,11 +134,24 @@ async function populate() {
     placeholder.hidden = true;
     list.add(placeholder)
     //   console.log((data.length-1)/2);
-    for (var i = 0; i < (data.length - 1) / 2; i++) {
+    for (var i = 0; i < (data.length - 1) / 3; i++) {
         var option = document.createElement("option");
         var txt = await browser.storage.local.get('target' + i);
-        //   console.log(txt);
-        txt = txt['target' + i].toLocaleString();
+        let name = "";
+        let nameFound = false;
+        try {
+            name = await browser.storage.local.get('name' + i);
+            nameFound = true;
+        } catch {
+            nameFound = false;
+        }
+
+        console.log(name);
+        if (nameFound && name["name" + i]) {
+            txt = name["name" + i];
+        } else {
+            txt = txt['target' + i].toLocaleString();
+        }
         option.text = txt;
         option.value = i;
         list.add(option);
@@ -148,6 +161,7 @@ async function removeDate(num) {
     if (num > -1) {
         browser.storage.local.remove('target' + num);
         browser.storage.local.remove('start' + num);
+        browser.storage.local.remove('name' + num);
         var data = await browser.storage.local.get();
         data = Object.entries(data);
         var counter = 0;
@@ -161,13 +175,17 @@ async function removeDate(num) {
             if (startss === "targe" && parseInt(data[i][0].substring(6)) > num) {
                 browser.storage.local.set({ ['target' + (parseInt(data[i][0].substring(6)) - 1)]: data[i][1] });
             }
+            if (starts.substring(0, 4) === "name" && parseInt(data[i][0].substring(4)) > num) {
+                browser.storage.local.set({ ['name' + (parseInt(data[i][0].substring(4)) - 1)]: data[i][1] });
+            }
         }
         if (counter == 0) {
             browser.storage.local.set({ 'number': num - 1 });
         }
-        num = (data.length - 1) / 2;
+        num = (data.length - 1) / 3;
         browser.storage.local.remove('target' + num);
         browser.storage.local.remove('start' + num);
+        browser.storage.local.remove('name' + num);
         populate();
         browser.runtime.sendMessage("draw");
 
