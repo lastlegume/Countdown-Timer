@@ -175,7 +175,7 @@ async function removeDate(num) {
             if (startss === "targe" && parseInt(data[i][0].substring(6)) > num) {
                 browser.storage.local.set({ ['target' + (parseInt(data[i][0].substring(6)) - 1)]: data[i][1] });
             }
-            if (starts.substring(0, 4) === "name" && parseInt(data[i][0].substring(4)) > num) {
+            if (startss.substring(0, 4) === "name" && parseInt(data[i][0].substring(4)) > num) {
                 browser.storage.local.set({ ['name' + (parseInt(data[i][0].substring(4)) - 1)]: data[i][1] });
             }
         }
