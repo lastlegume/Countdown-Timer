@@ -3,12 +3,14 @@
 
 <head>
     <meta charset="utf-8">
-    <script src="countdown.js" defer></script></head>
+    <script src="countdown.js" defer></script>
     <link rel="stylesheet" href="popup.css" />
-
 </head>
 
+
 <body>
+    <div class="curtain"></div>
+
     <h1 id="header">Time Until </h1>
     <h2 id="subhead"></h2>
     <div id="day"></div>
@@ -19,8 +21,25 @@
     <label>Timer Name: </label><input type='text' id='name'>
     <button id="add">Add</button>
     <br><button id="remove">Delete current timer</button>
-    <br><label>Choose a timer: <select id = "list">Timer</select></label>
-
+    <br><label>Choose a timer: <select id="list">Timer</select></label><span>&nbsp;&nbsp;</span>
+    <button id="dark-mode-toggle">
+        <svg version="1.1" width="24" height="24" xmlns="http://www.w3.org/2000/svg" id="light-icon">
+            <circle cx="12" cy="12" r="4" fill="transparent" />
+            <path d="M 12 19 V 23" />
+            <path d="M 12 5 V 1" />
+            <path d="M 19 12 H 23" />
+            <path d="M 5 12 H 1" />
+            <path d="M 17 17 l 3 3" />
+            <path d="M 17 7 l 3 -3" />
+            <path d="M 7 17 l -3 3" />
+            <path d="M 7 7 l -3 -3" />
+        </svg>
+    <svg version="1.1" width="24" height="24" xmlns="http://www.w3.org/2000/svg" id="dark-icon">
+            <circle cx="12" cy="12" r="8" fill="white" />
+            <circle cx="15" cy="9" r="5" fill="#1c1b22" stroke-width="white"/>
+            <!-- <path d="M 3 3 C 3 18, 6 21, 21 21" stroke="black"/> -->
+        </svg></button>
+    </button>
 </body>
 
 </html>

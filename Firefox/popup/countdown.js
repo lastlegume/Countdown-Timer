@@ -1,10 +1,31 @@
 // NOTE: num is the index of the active timer
 
+const add = document.getElementById("add");
+const remove = document.getElementById("remove");
+const darkmode = false;
+
+//dark mode switch
+// from https://www.cssportal.com/blog/css-dark-mode-guide/
+const darkModeToggle = document.getElementById('dark-mode-toggle');
+const body = document.body;
+darkModeToggle.addEventListener('click', () => {
+    body.classList.toggle('dark-mode');
+    darkModeToggle.classList.toggle('dark-mode');
+    darkModeToggle.children[0].classList.toggle('dark-mode');
+    darkModeToggle.children[1].classList.toggle('dark-mode');
+    add.classList.toggle('dark-mode');
+    remove.classList.toggle('dark-mode');
+    darkmode = !darkmode;
+});
+
+
+
+
+// maximum length before the name of the event is truncated
+const maxlen = 25;
 
 populate();
-const add = document.getElementById("add");
 add.addEventListener('click', () => setDate());
-const remove = document.getElementById("remove");
 remove.addEventListener('click', () => awaitRemove());
 var list = document.getElementById("list");
 list.addEventListener("change", () => changeDate());
@@ -25,15 +46,25 @@ async function calcOffset() {
         var num = await browser.storage.local.get({ 'number': 0 });
         num = num.number;
         var target = await browser.storage.local.get({ ['target' + num]: new Date(d.getFullYear() + 1, 0, 1) });
+        var name = await browser.storage.local.get({ ['name' + num]: "" });
     } catch (error) {
         console.log(error);
     }
-    target = target['target' + num];
-    //console.log(target);
+
+    target = new Date(target['target' + num]);
+    name = name['name' + num];
+
     var header = document.getElementById("header");
-    header.textContent = "Time Until " + target.toLocaleDateString();
     var subhead = document.getElementById("subhead");
-    subhead.textContent = target.toLocaleTimeString();
+
+    if (name) {
+        header.textContent = "Time Until " + truncName(name);
+        subhead.textContent = target.toLocaleDateString() + " at " + target.toLocaleTimeString();
+    } else {
+        header.textContent = "Time Until " + target.toLocaleDateString();
+        subhead.textContent = target.toLocaleTimeString();
+    }
+
     var day = document.getElementById("day");
     var combined = target - d;
     var days = Math.max(0, Math.floor((combined) / 86400000));
@@ -47,18 +78,18 @@ async function calcOffset() {
     var sec = document.getElementById("second");
     var secs = Math.max(0, Math.floor((combined) / 1000 - days * 86400 - hours * 3600 - mins * 60));
     sec.textContent = Math.floor(secs) + (Math.floor(secs) == 1 ? " second" : " seconds");
-    day.style.setProperty('color', 'black');
-    hour.style.setProperty('color', 'black');
-    min.style.setProperty('color', 'black');
-    sec.style.setProperty('color', 'black');
+    day.style.removeProperty('color');
+    hour.style.removeProperty('color');
+    min.style.removeProperty('color');
+    sec.style.removeProperty('color');
     if (days == 0) {
-        day.style.setProperty('color', 'red');
+        day.style.setProperty('color', darkmode?'rgb(204, 28, 28)':'red');
         if (hours == 0) {
-            hour.style.setProperty('color', 'red');
+            hour.style.setProperty('color', darkmode?'rgb(204, 28, 28)':'red');
             if (mins == 0) {
-                min.style.setProperty('color', 'red');
+                min.style.setProperty('color', darkmode?'rgb(204, 28, 28)':'red');
                 if (secs == 0)
-                    sec.style.setProperty('color', 'red');
+                    sec.style.setProperty('color', darkmode?'rgb(204, 28, 28)':'red');
             }
         }
     }
@@ -151,7 +182,7 @@ async function populate() {
 
         console.log(name);
         if (nameFound && name["name" + i]) {
-            txt = name["name" + i];
+            txt = truncName(name["name" + i]);
         } else {
             txt = txt['target' + i].toLocaleString();
         }
@@ -202,7 +233,7 @@ async function checkForFinished() {
         if (data[i][0].substring(0, 6) === 'target') {
             // if from a previous version without names, add a blank name
             let n = parseInt(data[i][0].substring(6));
-            let name = await browser.storage.local.get({ ['name'+n]: "" });
+            let name = await browser.storage.local.get({ ['name' + n]: "" });
 
             if (data[i][1].getTime() + 3600000 < Date.now()) {
                 removeDate(data[i][0].substring(6));
@@ -210,4 +241,9 @@ async function checkForFinished() {
         }
     }
 
+}
+function truncName(name) {
+    if (name.length > maxlen)
+        return name.substring(0, maxlen) + "...";
+    return name;
 }
