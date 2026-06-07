@@ -62,19 +62,19 @@ button#dark-mode-toggle.dark-mode{
 }
 
 svg#light-icon{
-    stroke: black;
+    stroke: white;
     stroke-width: 3px;
-    display: block;
+    display: none;
 }
     
 svg#light-icon.dark-mode{
-    display: none;
+    display: block;
 }
 
 svg#dark-icon{
-    display: none;
+    display: block;
 }
     
 svg#dark-icon.dark-mode{
-    display: block;
+    display: none;
 }
