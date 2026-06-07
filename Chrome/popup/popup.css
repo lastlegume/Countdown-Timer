@@ -3,9 +3,16 @@ html {
     min-width: 20em;
 }
 body{
+    background: white;
     color: black;
     text-align: center;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    transition: background-color 0.3s, color 0.3s;
+}
+body.dark-mode{
+    background: #1c1b22;
+    color: white;
+    transition: background-color 0.3s, color 0.3s;
 }
 h1, h2{
     margin: 0px;
@@ -22,18 +29,52 @@ button{
     transition: 100ms;
     margin-bottom: 2px;
 }
-#add{
+
+#add, button:hover#add.dark-mode{
     background-color: lawngreen;
 }
-#remove{
+#remove, button:hover#remove.dark-mode{
     background-color: red;
 }
-button:hover#add{
+
+button:hover#add, #add.dark-mode{
     background-color: rgb(107, 196, 19);
 }
-button:hover#remove{
-    background-color: rgb(220, 22, 22);
+button:hover#remove, #remove.dark-mode{
+    background-color: rgb(204, 28, 28);
 }
 button:active{
     box-shadow: 0 1px #666;
+}
+
+button#dark-mode-toggle{
+    padding: 4px;
+    /* margin: 5px; */
+    float: right;
+    background-color: white;
+    border: black 1px solid;
+}
+
+button#dark-mode-toggle.dark-mode{
+    padding: 4px;
+    background-color: #1c1b22;
+    border: white 1px solid;
+}
+
+svg#light-icon{
+    stroke: white;
+    stroke-width: 3px;
+    display: none;
+}
+    
+svg#light-icon.dark-mode{
+    display: block;
+}
+
+svg#dark-icon{
+    display: block;
+}
+    
+svg#dark-icon.dark-mode{
+    display: none;
 }
